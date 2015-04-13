@@ -68,7 +68,7 @@ We can now publish to a remote docker repository (e.g. bintray). To do this firs
 Now run this:
 
     # before pushing, you need to tag the image with the the target repository name
-    docker tag blueprint/activemq:1.0.0 davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0
+    docker tag -f blueprint/activemq davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0
     # this will push to bin tray
     docker push davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0
 

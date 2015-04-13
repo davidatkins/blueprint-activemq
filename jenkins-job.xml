@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.11.2">
+      <projectUrl>https://github.com/davidatkins/blueprint-activemq/</projectUrl>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/davidatkins/blueprint-activemq.git</url>
+        <credentialsId>794b7040-ca14-4722-8d01-529c50dd12d7</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>DOCKER_IP=`ip route show 0.0.0.0/0 | grep -Eo &apos;via \S+&apos; | awk &apos;{ print $2 }&apos;`
+echo DOCKER_HOST=tcp://$DOCKER_IP:2375 &gt; build_props</command>
+    </hudson.tasks.Shell>
+    <EnvInjectBuilder plugin="envinject@1.91.1">
+      <info>
+        <propertiesFilePath>build_props</propertiesFilePath>
+      </info>
+    </EnvInjectBuilder>
+    <hudson.tasks.Maven>
+      <targets>install docker:build</targets>
+      <mavenName>3.2.5</mavenName>
+      <usePrivateRepository>false</usePrivateRepository>
+      <settings class="jenkins.mvn.DefaultSettingsProvider"/>
+      <globalSettings class="jenkins.mvn.DefaultGlobalSettingsProvider"/>
+    </hudson.tasks.Maven>
+    <hudson.tasks.Shell>
+      <command># before pushing, you need to tag the image with the the target repository name
+docker tag -f blueprint/activemq davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0
+# this will push to bin tray
+docker push davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>
