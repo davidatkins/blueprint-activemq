@@ -47,7 +47,7 @@
 
         <docker.assemblyDescriptorRef>artifact-with-dependencies</docker.assemblyDescriptorRef>
         <docker.from>fabric8/java</docker.from>
-        <docker.image>davidatkins/activemq</docker.image>
+        <docker.image>blueprint/activemq</docker.image>
     </properties>
 
     <dependencyManagement>

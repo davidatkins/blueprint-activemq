@@ -47,7 +47,9 @@ You can now connect to your activemq image's jolkia endpoint by choosing connect
 
 A new window should pop up and you should see an activemq tab, confirming amq is running
 
-## Building
+# Building
+
+## Manually
 
 Build using the following
 
@@ -73,3 +75,11 @@ Now run this:
 Of course if pushing to your own bintray, you'll need to change the repository path in your tag and push command.
 
 FYI - this could all be done using the maven plugin. The plugin supports push OOTB. Instead of tagging after build, the config can be changed to build the image with the repository tag in the first place
+
+## Jenkins
+
+All of the above can be done via the bundled Jenkins build job. Easiest approach is to install an instance of the (Jenkins Blueprint)[http://github.com/davidatkins/blueprint-jenkins], read the notes on github to setup git and credentials for your target registry, and then install the jenkins job in this project using:
+
+ cat jenkins-job.xml | curl -L -X POST -H "Content-Type: application/xml" -H "Expect: " --data-binary @- $JENKINS_ENDPOINT/createItem?name=blueprint-activemq
+
+Fixing the Jenkins endpoint, of course.
