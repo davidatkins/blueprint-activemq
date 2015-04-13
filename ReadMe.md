@@ -78,8 +78,8 @@ FYI - this could all be done using the maven plugin. The plugin supports push OO
 
 ## Jenkins
 
-All of the above can be done via the bundled Jenkins build job. Easiest approach is to install an instance of the (Jenkins Blueprint)[http://github.com/davidatkins/blueprint-jenkins], read the notes on github to setup git and credentials for your target registry, and then install the jenkins job in this project using:
+All of the above can be done via the bundled Jenkins build job. Easiest approach is to install an instance of the [Jenkins Blueprint](http://github.com/davidatkins/blueprint-jenkins), read the notes on github to setup git and credentials for your target registry, and then install the jenkins job in this project using:
 
- cat jenkins-job.xml | curl -L -X POST -H "Content-Type: application/xml" -H "Expect: " --data-binary @- $JENKINS_ENDPOINT/createItem?name=blueprint-activemq
+    cat jenkins-job.xml | curl -L -X POST -H "Content-Type: application/xml" -H "Expect: " --data-binary @- $JENKINS_ENDPOINT/createItem?name=blueprint-activemq
 
 Fixing the Jenkins endpoint, of course.
