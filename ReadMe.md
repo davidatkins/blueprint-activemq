@@ -12,7 +12,7 @@ Before running or building you will need to be running docker, and your DOCKER_H
 
 There's a pre-built version of this project on bintray here - https://bintray.com/davidatkins/registry/blueprint%3Aactivemq/1.0.0/view. To run it, execute:
 
-    docker run -Pit davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0
+    docker run -it -p 6162:6162 -p 8778:8778 davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0
   
 You should see the output of starting the broker in your current window. Open a new window and type
 
@@ -23,9 +23,9 @@ This should confirm that amq is running, and two ports have been forwarded.
     CONTAINER ID        IMAGE                                                             COMMAND             CREATED             STATUS              PORTS                                              NAMES
     04f290017c10        davidatkins-docker-registry.bintray.io/blueprint/activemq:1.0.0   "/fabric8/run.sh"   3 minutes ago       Up 3 minutes        0.0.0.0:49153->8778/tcp, 0.0.0.0:49154->6162/tcp   happy_lumiere       
 
-6162 is the activemq port. 8778 is a jolokia (JMX over http) port. In this case they've been forwarded to the docker host on ports 49154 and 49153. You can then access these ports from your host machine e.g. the following should return some html:
+6162 is the activemq port. 8778 is a jolokia (JMX over http) port. You can then access these ports from your host machine e.g. the following should return some json from jolokia:
 
-    curl $(boot2docker ip 2>/dev/null):49153
+    curl $(boot2docker ip 2>/dev/null):8778/jolokia/
 
 ## Verifying Broker
 
@@ -35,15 +35,15 @@ We'll use Hawtio. Run the following command to download and run a seperate docke
 
     docker run -p 9282:8080 -it fabric8/hawtio
 
-You may see some errors, but this didn't seem to be a problem for my instance. Now connect to the Hawtio web interface using the boot2docker ip and the port forwarded from 8080 on the hawtio docker image. For example, mine was:
+You may see some errors, but this didn't seem to be a problem for my instance. Now connect to the Hawtio web interface:
 
-    http://192.168.59.103:9282/hawtio
+    http://$(boot2docker ip 2>/dev/null):9282/hawtio
 
 You can now connect to your activemq image's jolkia endpoint by choosing connection and using the following options:
 
     name: amq
     host: boot2docker ip
-    port: whatever port docker maps 8778 to
+    port: 8778
 
 A new window should pop up and you should see an activemq tab, confirming amq is running
 
