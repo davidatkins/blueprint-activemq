@@ -23,7 +23,7 @@
 
     <bean id="memoryStrategy" class="io.fabric8.mq.DefaultMemoryStrategy" />
 
-    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="${AMQ_BROKER_NAME}" dataDirectory="${AMQ_DATA_DIRECTORY}">
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="${AMQ_BROKER_NAME}" dataDirectory="${AMQ_DATA_DIRECTORY}" persistent="${AMQ_PERSISTENT}">
 
         <plugins>
             <statisticsBrokerPlugin/>
